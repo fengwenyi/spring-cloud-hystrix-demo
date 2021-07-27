@@ -1,0 +1,8 @@
+POST http://localhost:9001/order/create
+Content-Type: application/json
+
+{
+"uid": 1
+}
+
+###
