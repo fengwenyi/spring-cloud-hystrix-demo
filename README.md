@@ -8,11 +8,28 @@
 
 |名称|版本|
 | --- | --- |
-| | |
+| spring-boot | 2.0.3.RELEASE |
+| spring-cloud | Finchley.RELEASE |
 
-## fallback写法
+## hystrix 与 feign
 
-### 一
+**IUserApi**
+
+```java
+@RequestMapping("/userApi")
+public interface IUserApi {
+
+    @GetMapping("/getUser")
+    ResultTemplate<UserResponseVo> getUser(@RequestParam("uid") Integer uid);
+
+    @PostMapping("/addUser")
+    ResultTemplate<UserResponseVo> addUser(@RequestBody UserRequestVo requestVo);
+}
+```
+
+### fallback用法示例
+
+#### 第一种写法，继承API
 
 ```java
 @FeignClient(name = "user-service", fallback = UserFeignClientFallback.class)
@@ -32,7 +49,7 @@ public class UserFeignClientFallback implements IUserFeignClient {
 }
 ```
 
-### 二
+#### 第二种写法，不继承API
 
 ```java
 @FeignClient(name = "user-service", fallback = UserFeignClientFallback.class)
@@ -54,7 +71,7 @@ public class UserFeignClientFallback implements IUserFeignClient {
 }
 ```
 
-## fallbackFactory
+### fallbackFactory用法示例
 
 ```java
 @FeignClient(name = "user-service", fallbackFactory = UserFeignFallbackFactory.class)
