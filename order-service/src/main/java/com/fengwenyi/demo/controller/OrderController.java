@@ -26,7 +26,7 @@ public class OrderController {
     @PostMapping("/create")
     @HystrixCommand(fallbackMethod = "fallbackMethod")
     public ResultTemplate<Void> create(@RequestBody CreateOrderRequestVo requestVo) {
-        log.info("{}", 1 / 0);
+        //log.info("{}", 1 / 0);
         return orderService.create(requestVo);
     }
 
