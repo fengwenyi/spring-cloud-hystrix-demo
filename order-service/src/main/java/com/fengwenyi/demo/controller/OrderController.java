@@ -4,6 +4,8 @@ import com.fengwenyi.api.result.ResultTemplate;
 import com.fengwenyi.demo.service.IOrderService;
 import com.fengwenyi.demo.vo.CreateOrderRequestVo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.contrib.javanica.annotation.ObservableExecutionMode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,19 @@ public class OrderController {
     private IOrderService orderService;
 
     @PostMapping("/create")
-    @HystrixCommand(fallbackMethod = "fallbackMethod")
+    @HystrixCommand(
+            fallbackMethod = "fallbackMethod",
+            ignoreExceptions = {},
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")
+            },
+            threadPoolKey = "hystrixDemoThreadPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "30"),
+                    @HystrixProperty(name = "maxQueueSize", value = "10")
+            },
+            observableExecutionMode = ObservableExecutionMode.EAGER,
+            defaultFallback = "")
     public ResultTemplate<Void> create(@RequestBody CreateOrderRequestVo requestVo) {
         //log.info("{}", 1 / 0);
         return orderService.create(requestVo);

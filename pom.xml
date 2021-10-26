@@ -9,6 +9,7 @@
         <module>user-service</module>
         <module>user-api</module>
         <module>hystrix-dashboard</module>
+        <module>hystrix-demo</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

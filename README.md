@@ -100,3 +100,32 @@ public class UserFeignFallbackFactory implements FallbackFactory<IUserFeignClien
 }
 
 ```
+
+## @HystrixCommand注解
+
+```java
+public class Demo {
+    
+    @HystrixCommand(
+            fallbackMethod = "fallbackMethod",
+            ignoreExceptions = {},
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")
+            },
+            threadPoolKey = "hystrixDemoThreadPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "30"),
+                    @HystrixProperty(name = "maxQueueSize", value = "10")
+            },
+            observableExecutionMode = ObservableExecutionMode.EAGER,
+            defaultFallback = "")
+    public void create() {
+
+    }
+    
+}
+```
+
+@HystrixProperty
+
+
